@@ -18,3 +18,27 @@ exports.saveRecipeController=async (req,res) => {
         res.status(401).json(error)
     }
 }
+
+exports.getUserSavedRecipeController = async (req,res) => {
+    console.log("Inside getUserSavedRecipeController");
+    userId =  req.userId
+    try {
+        const savedCollection = await saveRecipe.find({userId})
+        res.status(200).json(savedCollection)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+    
+}
+
+exports.deleteSavedRecipeController = async (req,res) => {
+    console.log("Inside deleteSavedRecipeController");
+    const {id}=req.params
+    try {
+        await saveRecipe.findByIdAndDelete({_id:id})
+        res.status(200).json("Recipe Removed From the Saved Recipe Collection")
+
+    } catch (error) {
+        res.status(401).json(error)
+    }  
+}

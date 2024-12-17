@@ -1,4 +1,4 @@
-const downloadRecipes=require('../models/downloadRecipe')
+const downloadRecipes=require('../models/downloadRecipe');
 
 exports.addToDownloadRecipeController = async (req,res) => {
   console.log("inside addToDownloadRecipeController");
@@ -18,6 +18,27 @@ exports.addToDownloadRecipeController = async (req,res) => {
             res.status(200).json(newRecipe)
 
         }
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
+exports.getUserDownloadListController =async (req,res) => {
+    console.log("Inside getUserDownloadListController");
+    const userId =req.userId
+    try {
+        const userDownloadlist =await downloadRecipes.find({userId})
+        res.status(200).json(userDownloadlist)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
+exports.getallDownloadListController =async (req,res) => {
+    console.log("Inside getallDownloadListController");
+    try {
+        const allDownloadlist =await downloadRecipes.find()
+        res.status(200).json(allDownloadlist)
     } catch (error) {
         res.status(401).json(error)
     }

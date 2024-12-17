@@ -12,7 +12,7 @@ try{
     }else{
         const encryptedPassword =await bcrypt.hash(password,10)
         const newUser =  new users({
-            username,email,password:encryptedPassword
+            username,email,password:encryptedPassword,profilePic:""
         })
         await newUser.save()
         res.status(200).json(newUser)
@@ -44,4 +44,31 @@ exports.loginController=async(req,res)=>{
         res.status(401).json(error)
     }
 }
+exports.updateProfileController =async (req,res) => {
+    console.log("Inside editUserController");
+    const {profilePic}=req.body
+    const userId=req.userId
+
+    try{
+        const exisistingUser=await users.findById({_id:userId})
+        exisistingUser.profilePic=profilePic
+        await exisistingUser.save()
+        res.status(200).json(exisistingUser)
+    }
+    catch (err){
+        res.status(401).json(err)
+    }
+}
+exports.getAllUsers =async (req,res) => {
+    console.log("inside getAllUsers");
+    try {
+        const allUser = await users.find({role:"User"})
+        res.status(200).json(allUser)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
    
+
+
